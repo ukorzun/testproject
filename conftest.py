@@ -41,7 +41,7 @@ def driver(request, platform):
     driver_instance = create_driver(platform)
     driver_instance.maximize_window()
 
-    url = os.getenv('URL')
+    url = os.getenv('URL_UI')
     if url:
         driver_instance.get(url)
     else:
