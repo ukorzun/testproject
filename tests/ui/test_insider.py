@@ -38,7 +38,7 @@ def test_insider_flow(driver, platform):
     qa_jobs.click_see_all_jobs()
     time.sleep(3)
     qa_jobs.accept_cookies()
-    time.sleep(3)
+    time.sleep(5)
     qa_jobs.apply_filters(location=location, department=department)
     expected_title = "Quality Assurance"
     expected_department = "Quality Assurance"

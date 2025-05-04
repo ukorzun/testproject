@@ -38,6 +38,7 @@ class QAJobsPage(BasePage):
         self.wait_and_click_element((By.XPATH, f"//li[contains(text(), '{location}')]"))
         self.wait_and_click_element((By.XPATH, "//span[@id='select2-filter-by-department-container']"))
         self.wait_and_click_element((By.XPATH, f"//li[contains(text(), '{department}')]"))
+        time.sleep(3)
 
     @allure.step("Verify that all jobs match expected Title, Department, and Location")
     def verify_job_listings(self, expected_title, expected_department, expected_location):
