@@ -1,13 +1,7 @@
-# Autotests Ryvok
+## How to Run the Tests
 
-## Как запустить тесты
+1. Make sure Python is installed on your computer. If not, install it first.
 
-1. Убедитесь, что у вас установлен Python на вашем компьютере. Если нет установить.
-2. Создайте виртуальное окружение для вашего проекта. Выполните следующую команду в терминале: 
-                                        `python -m venv myenv`
-3. Активируйте виртуальное окружение. Выполните следующую команду в терминале: 
-                                        `source myenv/bin/activate`
-4. Установите необходимые зависимости, указанные в файле requirements.txt. Выполните следующую команду: 
-                                        `pip install -r requirements.txt`
-5. Перейдите в каталог с вашим проектом и запустите тесты с помощью команды pytest. Выполните следующую команду:
-                                        `python -m pytest -s -v`
+2. Create a virtual environment for your project. Run the following command in the terminal:
+   ```bash
+   python -m venv myenv
