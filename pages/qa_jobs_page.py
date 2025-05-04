@@ -24,7 +24,7 @@ class QAJobsPage(BasePage):
     def open_qa_page(self):
         # # self.hover_over_element(self.QUALITY_ASSURANCE_HEADER)
         # self.wait_and_click_element(self.QUALITY_ASSURANCE_HEADER)
-        base_url = os.getenv("URL")
+        base_url = os.getenv("URL_UI")
         full_url = f"{base_url}/careers/quality-assurance/"
         self.driver.get(full_url)
 
