@@ -1,9 +1,8 @@
-import time
-
 import allure
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 
 class BasePage:
 
@@ -41,20 +40,6 @@ class BasePage:
     @allure.step("Hover over given locator")
     def hover_over_locator(self, element):
         ActionChains(self.driver).move_to_element(element).perform()
-
-
-    @allure.step("Verify visibility of element: {element_name}")
-    def verify_element_visible(self, locator, element_name="element"):
-        try:
-            WebDriverWait(self.driver, self.wait_time).until(EC.visibility_of_element_located(locator))
-        except Exception:
-            screenshot = self.driver.get_screenshot_as_png()
-            allure.attach(
-                screenshot,
-                name=f"Element '{element_name}' not visible",
-                attachment_type=allure.attachment_type.PNG
-            )
-            assert False, f"Element '{element_name}' is not found or not visible on the page."
 
     @allure.step("Verify visibility of multiple elements")
     def verify_elements_visible(self, elements: list):

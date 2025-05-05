@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 
 @dataclass
 class Category:
@@ -18,4 +18,4 @@ class Pet:
     name: str
     photoUrls: List[str]
     tags: List[Tag]
-    status: Optional[str] = None
+    status: str

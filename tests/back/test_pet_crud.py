@@ -13,6 +13,7 @@ BASE_URL = os.getenv("URL_BACK")
 HEADERS = {"Content-Type": "application/json"}
 
 
+@allure.step("Create a new pet")
 def create_pet(pet: Pet):
     return requests.post(
         f"{BASE_URL}/pet",
@@ -20,11 +21,11 @@ def create_pet(pet: Pet):
         data=json.dumps(pet, default=lambda o: o.__dict__)
     )
 
-
+@allure.step("Find pet by ID: {pet_id}")
 def find_pet_by_id(pet_id: int):
     return requests.get(f"{BASE_URL}/pet/{pet_id}", headers=HEADERS)
 
-
+@allure.step("Update pet data")
 def update_pet(pet: Pet):
     return requests.put(
         f"{BASE_URL}/pet",
@@ -32,7 +33,7 @@ def update_pet(pet: Pet):
         data=json.dumps(pet, default=lambda o: o.__dict__)
     )
 
-
+@allure.step("Delete pet by ID: {pet_id}")
 def delete_pet(pet_id: int):
     return requests.delete(f"{BASE_URL}/pet/{pet_id}", headers=HEADERS)
 
@@ -47,16 +48,13 @@ def new_pet():
         tags=[Tag(id=1, name="Friendly")],
         status="available"
     )
-    create_response = create_pet(pet)
-    assert create_response.status_code == 200
+    response = create_pet(pet)
+    assert response.status_code == 200, "Failed to create pet"
     yield pet
-    delete_pet(pet.id)
-
 
 @allure.title("Create a new pet in the Petstore")
 @allure.feature("Pet Management")
 @allure.story("Create Pet")
-@allure.severity(allure.severity_level.CRITICAL)
 def test_create_pet():
     pet = Pet(
         id=int(time.time()),
@@ -74,11 +72,9 @@ def test_create_pet():
 
     delete_pet(pet.id)
 
-
 @allure.title("Get a pet by ID from the Petstore")
 @allure.feature("Pet Management")
 @allure.story("Read Pet")
-@allure.severity(allure.severity_level.NORMAL)
 def test_get_pet_by_id(new_pet):
     max_attempts = 3
     for attempt in range(max_attempts):
@@ -92,11 +88,9 @@ def test_get_pet_by_id(new_pet):
     else:
         pytest.fail(f"Pet with id {new_pet.id} was not found after {max_attempts} attempts")
 
-
 @allure.title("Update an existing pet in the Petstore")
 @allure.feature("Pet Management")
 @allure.story("Update Pet")
-@allure.severity(allure.severity_level.CRITICAL)
 def test_update_pet(new_pet):
     new_pet.name = "Max"
     new_pet.status = "sold"
@@ -106,16 +100,19 @@ def test_update_pet(new_pet):
     assert updated["name"] == "Max"
     assert updated["status"] == "sold"
 
-
 @allure.title("Delete a pet from the Petstore")
 @allure.feature("Pet Management")
 @allure.story("Delete Pet")
-@allure.severity(allure.severity_level.CRITICAL)
 def test_delete_pet(new_pet):
-    delete_response = delete_pet(new_pet.id)
-    assert delete_response.status_code == 200
+    max_attempts = 2
+    for attempt in range(max_attempts):
+        delete_response = delete_pet(new_pet.id)
+        if delete_response.status_code == 200:
+            break
+        time.sleep(2)
+    else:
+        pytest.fail(f"Failed to delete pet with id {new_pet.id} after {max_attempts} attempts")
 
     time.sleep(2)
-
-    check = find_pet_by_id(new_pet.id)
-    assert check.status_code == 404
+    check_response = find_pet_by_id(new_pet.id)
+    assert check_response.status_code == 404, f"Pet with id {new_pet.id} still exists after deletion"

@@ -4,6 +4,7 @@ import allure
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 
+
 class CareersPage(BasePage):
     SEE_ALL_TEAMS_BUTTON = (By.XPATH, "//a[contains(@class, 'loadmore') and contains(text(), 'See all teams')]")
     FIND_YOUR_CALLING_HEADER = (By.XPATH, "//h3[contains(text(), 'Find your calling')]")

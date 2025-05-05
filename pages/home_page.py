@@ -2,8 +2,8 @@ import allure
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-class HomePage(BasePage):
 
+class HomePage(BasePage):
     COMPANY_MENU = (By.XPATH, "//a[contains(@class, 'nav-link') and contains(text(), 'Company')]")
     CAREERS_LINK = (By.XPATH, "//a[normalize-space(text())='Careers']")
 
