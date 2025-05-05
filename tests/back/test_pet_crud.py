@@ -39,9 +39,8 @@ def delete_pet(pet_id: int):
 
 @pytest.fixture
 def new_pet():
-    """Create a new Pet before test and delete after test"""
     pet = Pet(
-        id=int(time.time()),  # Dynamic ID to avoid conflicts
+        id=int(time.time()),
         category=Category(id=1, name="Dogs"),
         name="Rex",
         photoUrls=["https://example.com/photo1.jpg"],

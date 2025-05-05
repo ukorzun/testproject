@@ -6,13 +6,13 @@ from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
+
 class QAJobsPage(BasePage):
     SEE_ALL_QA_JOBS = (By.LINK_TEXT, "See all QA jobs")
     LOCATION_FILTER = (By.ID, "filter-by-location")
     DEPARTMENT_FILTER = (By.ID, "filter-by-department")
     JOB_LIST = (By.CSS_SELECTOR, ".position-list-item")
     POSITION_TITLE = (By.CSS_SELECTOR, "p.position-title")
-    VIEW_ROLE_BUTTON = (By.LINK_TEXT, "View Role")
     QUALITY_ASSURANCE_HEADER = (By.XPATH, "//a[contains(@href, '/careers/quality-assurance/')]")
     ACCEPT_COOKIES_BUTTON = (By.ID, "wt-cli-accept-all-btn")
 
@@ -49,27 +49,3 @@ class QAJobsPage(BasePage):
             if expected_title not in text or expected_department not in text or expected_location not in text:
                 return False
         return True
-
-    @allure.step("Click 'View Role' button for position: {position_name}")
-    def click_view_role_for_position(self, position_name):
-        for job in self.wait_all_elements_in_locator(self.JOB_LIST):
-            title = job.find_element(*self.POSITION_TITLE).text
-            if position_name in title:
-                button = job.find_element(*self.VIEW_ROLE_BUTTON)
-                self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", button)
-                button.click()
-                return
-        assert False, f"Position '{position_name}' not found!"
-
-
-    @allure.step("Select job by index {index} and click View Role")
-    def select_job_by_index_and_click_view_role(self, index):
-        jobs = self.wait_all_elements_in_locator((By.CSS_SELECTOR, ".position-list-item"))
-        selected_job = jobs[index]
-
-        job_title = selected_job.find_element(By.CSS_SELECTOR, "p.position-title").text
-        view_role_button = selected_job.find_element(By.LINK_TEXT, "View Role")
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", view_role_button)
-        view_role_button.click()
-
-        return job_title
